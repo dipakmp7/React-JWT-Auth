@@ -8,7 +8,7 @@ const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: 'manager',
-    database: 'jwtAuth'
+    database: 'LoginRegister'
 })
 
 const app = express()
