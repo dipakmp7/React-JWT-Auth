@@ -5,6 +5,8 @@ import cookieParser from 'cookie-parser';
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 
+const salt = 10
+
 
 const db = mysql.createConnection({
     host: 'localhost',
@@ -21,15 +23,31 @@ app.use(cookieParser())
 
 
 app.post("/register",(req,res)=>{
-    const name = req.body.name
-    const email = req.body.email
-    const password = req.body.password
-
+    
     const sql = "insert into login(`name`,`email`,`password`)values(?)";
+    
+    bcrypt.hash(req.body.password.toString(),salt,(err, hash)=>{
+        if (err){
+            res.json({Error : "Error in Hashing Passowrd"})
+        }else{
+            const values = [
+                req.body.name,
+                req.body.email,
+                hash
+            ]
 
-    mysql.query(sql,[name,email,password],(result)=>{
-        console.log(res.result)
+            db.query(sql,[values],(error,result)=>{
+                if(error){
+                    return res.json({Error : "Data is not inserted"})
+                }else{
+                    return res.json({Status : "Data Successfully Inserted"})
+                }
+            })
+        }
     })
+
+
+    
 })
 
 app.listen(2023,()=>{
