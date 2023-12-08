@@ -16,7 +16,7 @@ function Register(){
         e.preventDefault()
         axios.post("http://localhost:2023/register",values).then(res =>{
             // console.log(res)
-            if(res.data.Status == "Success"){
+            if(res.data.Status === "Success"){
                 navigate("/login")
             }
         }).catch(err => {
