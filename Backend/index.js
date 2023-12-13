@@ -1,3 +1,6 @@
+//Following code is user registration and login using a MySQL database. It uses the bcrypt library to hash and compare passwords securely.
+
+
 import express from 'express';
 import mysql from 'mysql'
 import cors from 'cors'
@@ -5,7 +8,7 @@ import cookieParser from 'cookie-parser';
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 
-const salt = 10
+const salt = 10      //The salt value of 10 is used as the cost factor for the bcrypt hashing algorithm.A common range for the cost factor is between 10 and 12, but it depends on your application's specific needs and performance considerations.
 
 
 const db = mysql.createConnection({
@@ -18,7 +21,11 @@ const db = mysql.createConnection({
 const app = express()
 
 app.use(express.json())
-app.use(cors())
+app.use(cors({
+    origin: ["http://localhost:3000"],
+    methods: ['POST','GET'],
+    credentials: true
+}))
 app.use(cookieParser())
 
 
@@ -60,6 +67,10 @@ app.post("/login",(req,res)=>{
                     if(error) return res.json({Error : "Password not compare"})
                     if(result){
                         // console.log(result)
+                        const name = data[0].name
+                        const token = jwt.sign({name},"jwt-secret-key",{expiresIn : '1d'})
+                        res.cookie('token',token)
+                        
                         return res.json({Status: "Success"})
                     }else{
                         return res.json({Status:"Password not matches"})
