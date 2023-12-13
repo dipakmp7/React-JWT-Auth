@@ -19,6 +19,9 @@ function Login() {
             if(res.data.Status === "Success"){
                 navigate("/")
             }
+            else{
+                alert(res.data.Error)
+            }
         }).catch(err => {
             console.log(err)
         })
