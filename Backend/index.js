@@ -26,7 +26,7 @@ app.post("/register",(req,res)=>{
     
     const sql = "insert into login(`name`,`email`,`password`)values(?)";
     
-    bcrypt.hash(req.body.password.toString(),salt,(err, hash)=>{                       // password hashing using bcrypt
+    bcrypt.hash(req.body.password.toString(),salt,(err, hash)=>{                       // here we store password using bcrypt.hash in database
         if (err){
             res.json({Error : "Error in Hashing Passowrd"})
         }else{
@@ -45,10 +45,31 @@ app.post("/register",(req,res)=>{
                 }
             })
         }
+    })   
+})
+
+app.post("/login",(req,res)=>{
+    const sql = "select * from login where email = ?"
+
+    db.query(sql,[req.body.email],(err,data)=>{
+        if(err){
+            return res.json({Error: "Failed"})
+        }else{
+            if(data.length > 0){
+                bcrypt.compare(req.body.password.toString(),data[0].password,(error,result)=>{    // here we compare our login password with database password
+                    if(error) return res.json({Error : "Password not compare"})
+                    if(result){
+                        // console.log(result)
+                        return res.json({Status: "Success"})
+                    }else{
+                        return res.json({Status:"Password not matches"})
+                    }
+                })
+            }else{
+                return res.json({Error : "Email does not exist"})
+            }
+        }
     })
-
-
-    
 })
 
 app.listen(2023,()=>{
