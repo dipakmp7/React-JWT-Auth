@@ -18,7 +18,6 @@ function Home() {
             if (res.data.Status === "Success") {
                 setAuth(true)
                 setName(res.data.name)
-                navigate("/")
             }
             else {
                 setAuth(false)
@@ -29,13 +28,22 @@ function Home() {
         })
     }, [])
 
+    const logout = () =>{
+        axios.get("http://localhost:2023/logout").then(res =>{
+            window.location.reload(true)
+            console.log(res)
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+
     return (
         <div className="container mt-4">
             {
                 auth ?
                     <div>
                         <h3>Welcome to Home Page, {name}</h3>
-                        <button className="btn btn-danger">Logout</button>
+                        <button className="btn btn-danger" onClick={logout} >Logout</button>
                     </div>
                     :
                     <>

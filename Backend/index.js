@@ -111,6 +111,14 @@ app.get("/",verifyUser,(req,res)=>{
     return res.json({Status : "Success", name:req.name })
 })
 
+
+// api for logout
+
+app.get("/logout",(req,res)=>{
+    res.clearCookie('token')
+    return res.json({Status : "Success"})
+})
+
 app.listen(2023,()=>{
     console.log("server listen at 2023")
 })
