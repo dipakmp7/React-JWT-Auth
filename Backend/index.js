@@ -87,6 +87,30 @@ app.post("/login",(req,res)=>{
     })
 })
 
+// this function is written for heck our user is already login or not to verify it
+
+const verifyUser = (req,res,next) => {
+    const token = req.cookies.token
+    if(!token){
+        return res.json({Error : "You are Not Authenticated"})
+    }
+    else{
+        jwt.verify(token,"jwt-secret-key",(err,decode)=>{
+            if(err){
+                return res.json({Error : "Token is not Correct"})
+            }
+            else{
+                req.name = decode.name
+                next()
+            }
+        })
+    }
+}
+
+app.get("/",verifyUser,(req,res)=>{
+    return res.json({Status : "Success", name:req.name })
+})
+
 app.listen(2023,()=>{
     console.log("server listen at 2023")
 })
