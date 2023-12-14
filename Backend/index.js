@@ -1,4 +1,4 @@
-//Following code is user registration and login using a MySQL database. It uses the bcrypt library to hash and compare passwords securely.
+//Following code is user registration and login using a MySQL database. It uses the bcrypt library to hash and compare passwords securely and JWT for user authentication.
 
 
 import express from 'express';
@@ -70,6 +70,10 @@ app.post("/login",(req,res)=>{
                         const name = data[0].name
                         const token = jwt.sign({name},"jwt-secret-key",{expiresIn : '1d'})
                         res.cookie('token',token)
+
+                        // The first argument to jwt.sign is the payload. In this case, it's an object with a single property name, which holds the user's name.
+                        // The second argument is the secret key used for signing the token.
+                        // The third argument is an options object. Here, expiresIn: '1d' specifies that the token will expire in one day.
                         
                         return res.json({Status: "Success"})
                     }else{
