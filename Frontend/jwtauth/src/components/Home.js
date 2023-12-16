@@ -31,7 +31,7 @@ function Home() {
     const logout = () =>{
         axios.get("http://localhost:2023/logout").then(res =>{
             window.location.reload(true)
-            console.log(res)
+            // console.log(res)
         }).catch(err => {
             console.log(err)
         })
