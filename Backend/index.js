@@ -29,6 +29,7 @@ app.use(cors({
 app.use(cookieParser())
 
 
+// register api
 app.post("/register",(req,res)=>{
     
     const sql = "insert into login(`name`,`email`,`password`)values(?)";
@@ -55,6 +56,8 @@ app.post("/register",(req,res)=>{
     })   
 })
 
+
+// login api
 app.post("/login",(req,res)=>{
     const sql = "select * from login where email = ?"
 
@@ -87,7 +90,7 @@ app.post("/login",(req,res)=>{
     })
 })
 
-// this function is written for heck our user is already login or not to verify it
+// this function is written for check our user is already login or not to verify it
 
 const verifyUser = (req,res,next) => {
     const token = req.cookies.token

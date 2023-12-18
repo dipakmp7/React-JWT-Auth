@@ -14,6 +14,7 @@ function Login() {
 
     axios.defaults.withCredentials = true        // Configures Axios to send credentials (such as cookies) with cross-origin requests.
 
+    // handlsubmit calls when the form is submitted
     const handleSubmit = (e) => {
         e.preventDefault()              // Prevents the default form submission behavior.  at the bottom explaination is available
         axios.post("http://localhost:2023/login",values).then(res =>{

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 function Home() {
@@ -9,8 +9,6 @@ function Home() {
     const [message, setMessage] = useState('')
 
     axios.defaults.withCredentials = true
-
-    const navigate = useNavigate()
 
     useEffect(() => {
         axios.get("http://localhost:2023").then(res => {
